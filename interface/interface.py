@@ -58,12 +58,12 @@ tk_font = font.Font(family="Alata-Regular", size=12)
 jeu.tk.call("font", "create", "Alata-Regular", "-family", "Alata-Regular", "-size", "12")
 
 # Chargement des images
-GameSettingDirectionLeft = t.PhotoImage(file="../assets/buttonImg/GameSettingDirectionLeft.png")
-GameSettingDirectionRight = t.PhotoImage(file="../assets/buttonImg/GameSettingDirectionRight.png")
-GameSettingDirectionLeftClicked = t.PhotoImage(file="../assets/buttonImg/GameSettingsDirectionLeftClicked.png")
-GameSettingDirectionRightClicked = t.PhotoImage(file="../assets/buttonImg/GameSettingsDirectionRightClicked.png")
-BoutonLancer = t.PhotoImage(file="../assets/buttonImg/LancerBouton.png")
-BoutonLancerClicked = t.PhotoImage(file="../assets/buttonImg/LancerBoutonClicked.png")  
+GameSettingDirectionLeft = t.PhotoImage(file="assets/buttonImg/GameSettingDirectionLeft.png")
+GameSettingDirectionRight = t.PhotoImage(file="assets/buttonImg/GameSettingDirectionRight.png")
+GameSettingDirectionLeftClicked = t.PhotoImage(file="assets/buttonImg/GameSettingsDirectionLeftClicked.png")
+GameSettingDirectionRightClicked = t.PhotoImage(file="assets/buttonImg/GameSettingsDirectionRightClicked.png")
+BoutonLancer = t.PhotoImage(file="assets/buttonImg/LancerBouton.png")
+BoutonLancerClicked = t.PhotoImage(file="assets/buttonImg/LancerBoutonClicked.png")  
 
 # =============================================================================
 # CRÉATION DE L'INTERFACE
