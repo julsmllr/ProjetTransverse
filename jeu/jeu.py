@@ -20,7 +20,7 @@ WIDTH, HEIGHT = 640, 800
 MAX_ESSAIS = 5
 # Variables de tir prédéfinies
 POWER = 100  
-THETA = 80  
+THETA = 90  
 
 # Couleurs
 WHITE = (255, 255, 255)
@@ -44,7 +44,17 @@ hoop_img = pygame.transform.scale(hoop_img, (100, 50))
 
 
 
+def reglage_angle_moins():
+    THETA -= 5
+    return THETA
 
+def reglage_angle_plus():
+    THETA += 5
+    return THETA
+
+def reglage_puissance(value):
+    POWER = value;
+    return POWER
 
 def reset_ball(essais, pos_panier):
     essais = 0

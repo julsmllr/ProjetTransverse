@@ -4,7 +4,7 @@
 import tkinter as t
 from tkinter import font
 import os
-
+from jeu.jeu import reglage_angle_moins, reglage_angle_plus, reglage_puissance
 # =============================================================================
 # CONSTANTES ET VARIABLES GLOBALES
 # =============================================================================
@@ -127,26 +127,18 @@ gestionSettingsEntriesDirectionLabel.pack(side="top", pady=50)
 gestionSettingsEntriesDirectionButtonFrame = t.Frame(gestionSettingsEntriesDirection, bg=bg_color)
 gestionSettingsEntriesDirectionButtonFrame.pack(expand=True, fill="both", side="bottom")
 
-gestionSettingsEntriesDirectionButtonPlus = t.Button(
-    gestionSettingsEntriesDirectionButtonFrame,
-    image=GameSettingDirectionRight,
-    bd=0,
-    highlightthickness=0,
-    relief="flat",
-    bg=bg_color,
-    activebackground=bg_color,
-    cursor="hand2"
+gestionSettingsEntriesDirectionButtonPlus = t.Button(gestionSettingsEntriesDirectionButtonFrame,image=GameSettingDirectionRight,bd=0,highlightthickness=0,relief="flat",bg=bg_color,activebackground=bg_color,cursor="hand2",command= reglage_angle_moins
 )
 
-gestionSettingsEntriesDirectionButtonMinus = t.Button(
-    gestionSettingsEntriesDirectionButtonFrame,
+gestionSettingsEntriesDirectionButtonMinus = t.Button(gestionSettingsEntriesDirectionButtonFrame,
     image=GameSettingDirectionLeft,
     bd=0,
     highlightthickness=0,
     relief="flat",
     bg=bg_color,
     activebackground=bg_color,
-    cursor="hand2"
+    cursor="hand2",
+    command= reglage_angle_moins
 )
 
 # Configuration des événements des boutons
