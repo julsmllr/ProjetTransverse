@@ -4,10 +4,18 @@
 import tkinter as t
 from tkinter import font
 import os
-from jeu.jeu import reglage_angle_moins, reglage_angle_plus, reglage_puissance
+import pygame
+from PIL import Image, ImageTk
+import threading
+
+
+os.sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+from jeu.jeu import JeuBasket
+
 # =============================================================================
 # CONSTANTES ET VARIABLES GLOBALES
 # =============================================================================
+pygameGame = JeuBasket()
 
 # Couleurs
 bg_color = "#F8F8F8"
@@ -41,6 +49,11 @@ def LaunchButtonNotClicked(event):
 
 def LaunchButtonClicked(event):
     gestionSettingsConfirmationButton.config(image=BoutonLancerClicked)
+
+def GameClose(event):
+    jeu.destroy()
+    pygameGame.jeuQuit()
+
 # =============================================================================
 # CONFIGURATION INITIALE
 # =============================================================================
@@ -48,9 +61,11 @@ def LaunchButtonClicked(event):
 # Création de la fenêtre principale
 jeu = t.Tk()
 jeu.title("Simulation de projectile")
-jeu.geometry("1920x1080")
-jeu.attributes('-fullscreen', True)
-jeu.bind('<Escape>', lambda e: jeu.destroy())
+jeu.geometry("960x1080+0+0")
+jeu.bind('<Escape>', lambda e: GameClose(e))
+
+
+
 
 # Configuration de la police
 font_path = "../assets/fonts/Alata-Regular.ttf"
@@ -74,16 +89,13 @@ gameInterface = t.Frame(jeu, bg=dark_bg_color)
 gameInterface.pack(expand=True, fill="both")
 
 # Sections principales
-gameGestionSettings = t.Frame(gameInterface, bg=bg_color, width=640)
-gameInterfaceMiddle = t.Frame(gameInterface, bg='red', width=640)
-gameInformations = t.Frame(gameInterface, bg='purple', width=640)
+gameGestionSettings = t.Frame(gameInterface, bg=bg_color, width=480)
+gameInformations = t.Frame(gameInterface, bg='purple', width=480)
 
 gameGestionSettings.pack_propagate(False)
-gameInterfaceMiddle.pack_propagate(False)
 gameInformations.pack_propagate(False)
 
 gameGestionSettings.pack(side="left", fill="both", expand=True)
-gameInterfaceMiddle.pack(side="left", fill="both", expand=True)
 gameInformations.pack(side="left", fill="both", expand=True)
 
 # =============================== SECTION GESTION DES PARAMÈTRES =============================== #
@@ -127,7 +139,16 @@ gestionSettingsEntriesDirectionLabel.pack(side="top", pady=50)
 gestionSettingsEntriesDirectionButtonFrame = t.Frame(gestionSettingsEntriesDirection, bg=bg_color)
 gestionSettingsEntriesDirectionButtonFrame.pack(expand=True, fill="both", side="bottom")
 
-gestionSettingsEntriesDirectionButtonPlus = t.Button(gestionSettingsEntriesDirectionButtonFrame,image=GameSettingDirectionRight,bd=0,highlightthickness=0,relief="flat",bg=bg_color,activebackground=bg_color,cursor="hand2",command= reglage_angle_moins
+gestionSettingsEntriesDirectionButtonPlus = t.Button(
+    gestionSettingsEntriesDirectionButtonFrame,
+    image=GameSettingDirectionRight,
+    bd=0,
+    highlightthickness=0,
+    relief="flat",
+    bg=bg_color,
+    activebackground=bg_color,
+    cursor="hand2",
+    command= pygameGame.setAngleMoins  
 )
 
 gestionSettingsEntriesDirectionButtonMinus = t.Button(gestionSettingsEntriesDirectionButtonFrame,
@@ -138,7 +159,7 @@ gestionSettingsEntriesDirectionButtonMinus = t.Button(gestionSettingsEntriesDire
     bg=bg_color,
     activebackground=bg_color,
     cursor="hand2",
-    command= reglage_angle_moins
+    command= pygameGame.setAnglePlus
 )
 
 # Configuration des événements des boutons
@@ -161,8 +182,10 @@ gestionSettingsEntriesPowerLabel = t.Label(
 )
 gestionSettingsEntriesPowerLabel.pack(side="top", pady=50)
 
-mon_slider = t.Scale(gestionSettingsEntriesPower, from_=0, to=100, orient='horizontal')
-mon_slider.pack(expand=True, side="bottom")
+powerScale = t.Scale(gestionSettingsEntriesPower, from_=10, to=200, orient='horizontal')
+powerScale.bind("<Motion>", lambda event: pygameGame.setPower(powerScale.get()))
+
+powerScale.pack(expand=True, side="bottom")
 
 # =============================== CONFIRMATION BUTTON =============================== #
 
@@ -173,7 +196,9 @@ gestionSettingsConfirmationButton = t.Button(
     highlightthickness=0,
     relief="flat",
     bg=bg_color,
-    activebackground=bg_color
+    activebackground=bg_color,
+    cursor="hand2",
+    command=pygameGame.ballonLancer
 )
 gestionSettingsConfirmationButton.pack(expand=True, ipady=20)
 
@@ -182,19 +207,6 @@ gestionSettingsConfirmationButton.bind("<Button-1>", LaunchButtonClicked)
 gestionSettingsConfirmationButton.bind("<ButtonRelease-1>", LaunchButtonNotClicked)
 
 
-
-# =============================================================================
-# SECTION JEU
-# =============================================================================
-
-GameLabel = t.Label(
-    gameInterfaceMiddle,
-    text="Espace pour le jeu pygame",
-    bg=bg_color,
-    fg=text_color,
-    font=primaryFont
-)
-GameLabel.pack(expand=True)
 
 # =============================================================================
 # SECTION INFORMATIONS
@@ -210,5 +222,14 @@ scoreLabel = t.Label(
 )
 scoreLabel.pack(expand=True)
 
+
+def startGame():
+    pygameGame.jeuLancer()
+
 if __name__ == "__main__":
+    pygame_thread = threading.Thread(target=startGame)
+    pygame_thread.start()
+
+
     jeu.mainloop()
+    
