@@ -43,33 +43,20 @@ hoop_img = pygame.image.load("assets/img/hoop.png")
 hoop_img = pygame.transform.scale(hoop_img, (100, 50))
 
 
-# Position joueur + panier
-pos_joueur = (320, HEIGHT - 100)
-pos_panier = [random.randint(100, WIDTH - 100), random.randint(200, HEIGHT - 250)]
-
-
-# Variables de jeu
-global ball_pos, ball_launched, trajectory_points, current_point_index, essais, score, hoop_radius
-
-# Liste de position de la balle
-pos_balle = list(pos_joueur)
 
 
 
-
-def reset_ball(pos_balle, pos_joueur, essais, pos_panier):
-    pos_balle = list(pos_joueur)
+def reset_ball(essais, pos_panier):
     essais = 0
     pos_panier = [random.randint(100, WIDTH - 100), random.randint(200, HEIGHT - 250)]
-
-
+    return essais, pos_panier
 
 
 def draw_trajectory_preview(pos_x, pos_y):
-    pygame.draw.circle(screen, RED, (pos_x[0], pos_y[0]), 50)
-    pygame.draw.circle(screen, RED, (pos_x[1], pos_y[1]), 50)
-    pygame.draw.circle(screen, RED, (pos_x[2], pos_y[2]), 50)
-
+    pygame.draw.circle(screen, WHITE, (pos_x[10], pos_y[10]), 5)
+    pygame.draw.circle(screen, WHITE, (pos_x[20], pos_y[20]), 5)
+    pygame.draw.circle(screen, WHITE, (pos_x[30], pos_y[30]), 5)
+    pygame.display.flip()
 
 def draw_game(essais, score, pos_balle, pos_panier):
     screen.blit(background, (0, 0))
@@ -78,7 +65,7 @@ def draw_game(essais, score, pos_balle, pos_panier):
     screen.blit(ball_img, (pos_balle[0]-25, pos_balle[1]-25))
 
     # Dessiner la hitbox du panier
-    pygame.draw.rect(screen, RED, (pos_panier[0], pos_panier[1]-50, 100, 50), 2)
+    pygame.draw.rect(screen, RED, (pos_panier[0]+10, pos_panier[1]-50, 80, 50), 2)
     pygame.draw.circle(screen, BLACK, (pos_balle[0], pos_balle[1]), 5)
 
 
@@ -96,47 +83,51 @@ def verif_coordonate(pos_balle_x, pos_balle_y, pos_panier, essais, score):
     panier_touche = False
     while indice_position < len(pos_balle_x) and not panier_touche:
         if pos_panier[0]+25 < pos_balle_x[indice_position] <pos_panier[0]+75:
-            print("Dans x")
-            if (pos_panier[1]-50 < pos_balle_y[indice_position] <pos_panier[1]) and (pos_balle_y[indice_position-1] > pos_balle_y[indice_position]):
-                
+
+            if (pos_panier[1]-50 < pos_balle_y[indice_position] <pos_panier[1]) and (pos_balle_y[indice_position-10] < pos_balle_y[indice_position]):
                 panier_touche = True
                 score += 1  
-                reset_ball(pos_balle, pos_joueur, essais, pos_panier)
+                essais, pos_panier = reset_ball(essais, pos_panier)
 
             else:
                 draw_game(essais, score, (pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
-                print("Panier Raté")
                 indice_position += 1
         else: 
             draw_game(essais, score, (pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
-            print("Panier Raté")
             indice_position += 1
 
     if not panier_touche:
         essais += 1 
+    
+    return essais, score, pos_panier
 
 def main():
     clock = pygame.time.Clock()
     essais = 0
     score = 0
+    
+    # Position joueur + panier
+    pos_joueur = (320, HEIGHT - 100)
+    pos_panier = (500, 300)#[random.randint(100, WIDTH - 100), random.randint(200, HEIGHT - 250)]
+
+    
     print(pos_joueur, pos_panier)
 
     while essais < MAX_ESSAIS:  
-        print("Score :", score)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    # Calcul de la trajectoire complète
-                    verif_coordonate(pos_balle_x, pos_balle_y, pos_panier, essais, score)
+                    essais, score, pos_panier = verif_coordonate(pos_balle_x, pos_balle_y, pos_panier, essais, score)
+                    
 
 
 
         draw_game(essais, score, pos_joueur, pos_panier)
         pos_balle_x, pos_balle_y = calculate_trajectory(POWER, THETA, pos_joueur)
-        draw_trajectory_preview(pos_balle_x[:2], pos_balle_y[:2])
+        draw_trajectory_preview(pos_balle_x[:31], pos_balle_y[:31])
 
 
 
