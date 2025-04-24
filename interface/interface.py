@@ -212,15 +212,31 @@ gestionSettingsConfirmationButton.bind("<ButtonRelease-1>", LaunchButtonNotClick
 # SECTION INFORMATIONS
 # =============================================================================
 
-score = 0
+def misAJourScoreErreurs():
+    scoreLabel.config(text="Score : " + str(pygameGame.score))
+    erreurLabel.config(text="Erreurs : " + str(pygameGame.essais) + "/" + str(pygameGame.max_essais))
+    jeu.after(1000, misAJourScoreErreurs)
+
+
 scoreLabel = t.Label(
     gameInformations,
-    text="Score : " + str(score),
+    text="Score : " + str(pygameGame.score),
     bg=bg_color,
     fg=text_color,
     font=primaryFont
 )
 scoreLabel.pack(expand=True)
+
+erreurLabel = t.Label(
+    gameInformations,
+    text="Erreurs : " + str(pygameGame.essais) + "/" + str(pygameGame.max_essais),
+    bg=bg_color,
+    fg=text_color,
+    font=primaryFont
+)
+erreurLabel.pack(expand=True)
+
+jeu.after(1000, misAJourScoreErreurs)
 
 
 def startGame():
@@ -228,6 +244,8 @@ def startGame():
 
 if __name__ == "__main__":
     pygame_thread = threading.Thread(target=startGame)
+    pygame_thread.daemon = True #Fermer Pygame quand Tkinter se fermer
+
     pygame_thread.start()
 
 

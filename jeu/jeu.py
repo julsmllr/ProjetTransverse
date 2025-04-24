@@ -82,8 +82,8 @@ class JeuBasket:
         return pos_panier
 
     def verifCoordonnes(self, pos_balle_x, pos_balle_y, pos_panier, indice_position):
-        if pos_panier[0]+25 < pos_balle_x[indice_position] <pos_panier[0]+75:
-            if (pos_panier[1]-50 < pos_balle_y[indice_position] <pos_panier[1]) and (pos_balle_y[indice_position-10] < pos_balle_y[indice_position]):
+        if pos_panier[0] < pos_balle_x[indice_position] <pos_panier[0]+100:
+            if (pos_panier[1]-25 < pos_balle_y[indice_position] <pos_panier[1]) and (pos_balle_y[indice_position-10] < pos_balle_y[indice_position]):
                 return True
             else: return False
         else: return False
