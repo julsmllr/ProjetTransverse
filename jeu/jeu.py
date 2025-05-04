@@ -4,7 +4,7 @@ import pygame
 import sys
 import os
 import random
-import pygetwindow as gw
+
 # Pour avoir le script Physique (Essayer de simplifier ça)
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from scriptPhysique.physique import calculate_trajectory
@@ -20,7 +20,7 @@ class JeuBasket:
         # Variables 
         self.width = 960
         self.height = 1080
-        self.power = 0
+        self.power = 50
         self.angle = 90
         self.essais = 0
         self.max_essais = 5
@@ -32,16 +32,13 @@ class JeuBasket:
         # Ecrans 
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)      
         pygame.display.set_caption("Jeu de Basket 2D")
-        #ChatGPT : Pour Position la fenetre de pygame à droite de l'écran
-        window = gw.getWindowsWithTitle("Jeu de Basket 2D")[0]  
-        window.move(480, 0) 
 
     def chargementTextureJeu(self):
-        self.background = pygame.image.load("assets/img/background.png")
+        self.background = pygame.image.load("../assets/img/background.png")
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
-        self.ball_img = pygame.image.load("assets/img/basketball.png")
+        self.ball_img = pygame.image.load("../assets/img/basketball.png")
         self.ball_img = pygame.transform.scale(self.ball_img, (50, 50))
-        self.hoop_img = pygame.image.load("assets/img/hoop.png")
+        self.hoop_img = pygame.image.load("../assets/img/hoop.png")
         self.hoop_img = pygame.transform.scale(self.hoop_img, (100, 50))
 
     # Set et Get
@@ -77,7 +74,8 @@ class JeuBasket:
                     indice_position += 1
             
         if not panier_touche:
-            self.essais += 1 
+            self.essais += 1
+            pos_panier = self.resetBall(pos_panier)
         
         return pos_panier
 
@@ -96,9 +94,14 @@ class JeuBasket:
 
 
     def drawTrajectoryPreview(self, pos_x, pos_y):
-        pygame.draw.circle(self.screen, WHITE, (pos_x[10], pos_y[10]), 5)
-        pygame.draw.circle(self.screen, WHITE, (pos_x[20], pos_y[20]), 5)
-        pygame.draw.circle(self.screen, WHITE, (pos_x[30], pos_y[30]), 5)
+
+        if len(pos_x) < 50:
+            for i in range(0, len(pos_x), 10):
+                pygame.draw.circle(self.screen, WHITE, (pos_x[i], pos_y[i]), 5)
+        else:
+            for i in range(0, 50, 10):
+                pygame.draw.circle(self.screen, WHITE, (pos_x[i], pos_y[i]), 5)
+
         pygame.display.flip()
 
     def drawGame(self, pos_ball, pos_panier):
@@ -109,7 +112,9 @@ class JeuBasket:
         self.screen.blit(self.ball_img, (pos_ball[0]-25, pos_ball[1]-25))
 
         pygame.draw.rect(self.screen, RED, (pos_panier[0]+10, pos_panier[1]-50, 80, 50), 2)
-        pygame.draw.circle(self.screen, BLACK, (pos_ball[0], pos_ball[1]), 5)
+        pygame.draw.rect(self.screen, BLACK, (0, 0, 310, 160))
+        pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
+
         pygame.display.flip()
 
     def jeuLancer(self):
@@ -123,6 +128,17 @@ class JeuBasket:
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
                         sys.exit()
+                    elif event.key == pygame.K_UP:
+                        self.setPower(self.getPower()+1)
+                    elif event.key == pygame.K_DOWN:
+                        self.setPower(self.getPower()-1)
+                    elif event.key == pygame.K_LEFT:
+                        self.setAnglePlus()
+                    elif event.key == pygame.K_RIGHT:
+                        self.setAngleMoins()
+                    elif event.key == pygame.K_SPACE:
+                        self.ballonLancer()
+
             if self.ballonStatus:
                 self.dessinBallonLancer()
             else:
@@ -136,7 +152,7 @@ class JeuBasket:
     def dessinBallonNonLancer(self):
         posBalleX, posBalleY = calculate_trajectory(self.power, self.angle,(self.width, self.height), position_initiale=self.pos_joueur)
         self.drawGame(self.pos_joueur, self.pos_panier)
-        self.drawTrajectoryPreview(posBalleX[:31], posBalleY[:31])
+        self.drawTrajectoryPreview(posBalleX, posBalleY)
         self.clock.tick(60) #Max fps
         pygame.display.flip()
 
@@ -144,7 +160,7 @@ class JeuBasket:
         posBalleX, posBalleY = calculate_trajectory(self.power, self.angle, (self.width, self.height), position_initiale=self.pos_joueur)
         self.pos_panier = self.dessinerLancer(posBalleX, posBalleY, self.pos_panier)
         self.drawGame(self.pos_joueur, self.pos_panier)
-        self.drawTrajectoryPreview(posBalleX[:31], posBalleY[:31])
+        self.drawTrajectoryPreview(posBalleX, posBalleY)
         self.clock.tick(60) #Max fps
         pygame.display.flip()
         self.ballonStatus = False

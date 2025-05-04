@@ -26,7 +26,7 @@ dark_primary_color = "#FC8E11"
 dark_text_color = "#F8F8F8"
 
 # Polices
-primaryFont = ("Alata-Regular", 20)
+primaryFont = "Helvetica"
 
 # =============================================================================
 # GESTIONNAIRES D'ÉVÉNEMENTS
@@ -68,17 +68,17 @@ jeu.bind('<Escape>', lambda e: GameClose(e))
 
 
 # Configuration de la police
-font_path = "../assets/fonts/Alata-Regular.ttf"
-tk_font = font.Font(family="Alata-Regular", size=12)
-jeu.tk.call("font", "create", "Alata-Regular", "-family", "Alata-Regular", "-size", "12")
+font_path = os.path.join("../assets/fonts/Helvetica.ttf")
+font.nametofont("Helvetica").configure(size=10)
+jeu.tk.call("font", "create", "Helvetica", "-family", "Helvetica", "-size", "12")
 
 # Chargement des images
-GameSettingDirectionLeft = t.PhotoImage(file="assets/buttonImg/GameSettingDirectionLeft.png")
-GameSettingDirectionRight = t.PhotoImage(file="assets/buttonImg/GameSettingDirectionRight.png")
-GameSettingDirectionLeftClicked = t.PhotoImage(file="assets/buttonImg/GameSettingsDirectionLeftClicked.png")
-GameSettingDirectionRightClicked = t.PhotoImage(file="assets/buttonImg/GameSettingsDirectionRightClicked.png")
-BoutonLancer = t.PhotoImage(file="assets/buttonImg/LancerBouton.png")
-BoutonLancerClicked = t.PhotoImage(file="assets/buttonImg/LancerBoutonClicked.png")  
+GameSettingDirectionLeft = t.PhotoImage(file="../assets/buttonImg/GameSettingDirectionLeft.png")
+GameSettingDirectionRight = t.PhotoImage(file="../assets/buttonImg/GameSettingDirectionRight.png")
+GameSettingDirectionLeftClicked = t.PhotoImage(file="../assets/buttonImg/GameSettingsDirectionLeftClicked.png")
+GameSettingDirectionRightClicked = t.PhotoImage(file="../assets/buttonImg/GameSettingsDirectionRightClicked.png")
+BoutonLancer = t.PhotoImage(file="../assets/buttonImg/LancerBouton.png")
+BoutonLancerClicked = t.PhotoImage(file="../assets/buttonImg/LancerBoutonClicked.png")
 
 # =============================================================================
 # CRÉATION DE L'INTERFACE
