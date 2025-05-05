@@ -20,10 +20,10 @@ class JeuBasket:
         # Variables 
         self.width = 960
         self.height = 1080
-        self.power = 50
+        self.power = 150
         self.angle = 90
         self.essais = 0
-        self.max_essais = 5
+        self.max_essais = 15
         self.score = 0
         self.pos_joueur = (self.width/2, self.height - 100)
         self.pos_panier = [random.randint(100, self.width - 100), random.randint(200, self.height - 250)]

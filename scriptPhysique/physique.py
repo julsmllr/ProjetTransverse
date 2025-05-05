@@ -3,11 +3,11 @@ from math import cos, sin, radians, atan2, degrees
 def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale=(0, 0)):
     # Constantes
     g = 9.81
-    dt = 0.1  # Intervalle de temps entre chaque point
+    dt = 0.15  # Intervalle de temps entre chaque point
     SCREEN_WIDTH = size[0]
     SCREEN_HEIGHT = size[1]
     REBONDS_MAX = 1
-    POURCENTS_REBOND = 0.7
+    POURCENTS_REBOND = 0.5
     # Conversion en radians
     angle_rad = radians(angle_degres)
 
@@ -38,7 +38,7 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
             dx = vx
             dy = g*t+vy
             new_angle = degrees(atan2(dy,dx))
-
+            new_vitesse = 0
 
             new_angle = -radians(180 - new_angle)
             vx = vitesse_initiale*POURCENTS_REBOND * cos(new_angle)
