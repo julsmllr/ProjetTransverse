@@ -1,4 +1,4 @@
-from math import cos, sin, radians, atan2, degrees
+from math import cos, sin, radians, atan2, degrees, sqrt
 
 def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale=(0, 0)):
     # Constantes
@@ -8,6 +8,7 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
     SCREEN_HEIGHT = size[1]
     REBONDS_MAX = 1
     POURCENTS_REBOND = 0.5
+    POSITION_REBOND = []
     # Conversion en radians
     angle_rad = radians(angle_degres)
 
@@ -24,7 +25,7 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
     # Calcul des positions
     t = 0
     calcul_positions = True
-    rebond = 0
+    rebond = True
 
     while calcul_positions:
         x = x0 + vx * t
@@ -33,16 +34,16 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
         # Vérifier si le point est dans l'écran
         if not (0 <= y <= SCREEN_HEIGHT):
             calcul_positions = False
-        elif not (0 <= x <= SCREEN_WIDTH) and rebond < REBONDS_MAX:
-            rebond += 1
+        elif not (0 <= x <= SCREEN_WIDTH) and rebond:
+            rebond = False
+            POSITION_REBOND.append((x, y))
             dx = vx
             dy = g*t+vy
             new_angle = degrees(atan2(dy,dx))
-            new_vitesse = 0
-
+            new_vitesse = sqrt((positions_x[-1]- positions_x[-10])**2 + (positions_y[-1]- positions_y[-10])**2)
             new_angle = -radians(180 - new_angle)
-            vx = vitesse_initiale*POURCENTS_REBOND * cos(new_angle)
-            vy = -vitesse_initiale*POURCENTS_REBOND * sin(new_angle)
+            vx = new_vitesse*POURCENTS_REBOND * cos(new_angle)
+            vy = -new_vitesse*POURCENTS_REBOND * sin(new_angle)
 
             if x > SCREEN_WIDTH:
                 x0 = SCREEN_WIDTH
@@ -55,8 +56,7 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
             positions_x.append(x)
             positions_y.append(y)
             t += dt
-        if len(positions_x) > 10000:
-            print("Trop Lourd")
-            return positions_x, positions_y
+            if (rebond == False):
+                rebond = True
 
-    return positions_x, positions_y
+    return positions_x, positions_y, POSITION_REBOND

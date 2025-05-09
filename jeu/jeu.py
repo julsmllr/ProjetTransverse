@@ -60,23 +60,28 @@ class JeuBasket:
         return self.angle
     
     # Méthodes liées aux coordonnées
-    def dessinerLancer(self, pos_balle_x, pos_balle_y, pos_panier):
+    def dessinerLancer(self, pos_balle_x, pos_balle_y, pos_panier, pos_rebond):
         indice_position = 0
         panier_touche = False 
         while indice_position < len(pos_balle_x) and not panier_touche:
-            if self.verifCoordonnes(pos_balle_x, pos_balle_y, pos_panier, indice_position):
-                    panier_touche = True
-                    self.score += 1  
-                    pos_panier = self.resetBall(pos_panier)
-
+            if (pos_balle_x[indice_position], pos_balle_y[indice_position]) == pos_rebond[0]:
+                #Play Song :
+                if len(pos_rebond) > 0:
+                    pos_rebond[0].pop(0)
             else:
-                    self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
-                    indice_position += 1
-            
-        if not panier_touche:
-            self.essais += 1
-            pos_panier = self.resetBall(pos_panier)
-        
+                if self.verifCoordonnes(pos_balle_x, pos_balle_y, pos_panier, indice_position):
+                        panier_touche = True
+                        self.score += 1
+                        pos_panier = self.resetBall(pos_panier)
+
+                else:
+                        self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
+                        indice_position += 1
+
+            if not panier_touche:
+                self.essais += 1
+                pos_panier = self.resetBall(pos_panier)
+
         return pos_panier
 
     def verifCoordonnes(self, pos_balle_x, pos_balle_y, pos_panier, indice_position):
@@ -111,8 +116,7 @@ class JeuBasket:
         self.screen.blit(self.hoop_img, (pos_panier[0], pos_panier[1]))
         self.screen.blit(self.ball_img, (pos_ball[0]-25, pos_ball[1]-25))
 
-        pygame.draw.rect(self.screen, RED, (pos_panier[0]+10, pos_panier[1]-50, 80, 50), 2)
-        pygame.draw.rect(self.screen, BLACK, (0, 0, 310, 160))
+        pygame.draw.rect(self.screen, RED, (pos_panier[0]+20, pos_panier[1]-50, 60, 50), 2)
         pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
 
         pygame.display.flip()
@@ -150,17 +154,15 @@ class JeuBasket:
         self.ballonStatus = True
 
     def dessinBallonNonLancer(self):
-        posBalleX, posBalleY = calculate_trajectory(self.power, self.angle,(self.width, self.height), position_initiale=self.pos_joueur)
+        posBalleX, posBalleY, posRebond = calculate_trajectory(self.power, self.angle,(self.width, self.height), position_initiale=self.pos_joueur)
         self.drawGame(self.pos_joueur, self.pos_panier)
         self.drawTrajectoryPreview(posBalleX, posBalleY)
         self.clock.tick(60) #Max fps
         pygame.display.flip()
 
     def dessinBallonLancer(self):
-        posBalleX, posBalleY = calculate_trajectory(self.power, self.angle, (self.width, self.height), position_initiale=self.pos_joueur)
-        self.pos_panier = self.dessinerLancer(posBalleX, posBalleY, self.pos_panier)
-        self.drawGame(self.pos_joueur, self.pos_panier)
-        self.drawTrajectoryPreview(posBalleX, posBalleY)
+        posBalleX, posBalleY, posRebond= calculate_trajectory(self.power, self.angle, (self.width, self.height), position_initiale=self.pos_joueur)
+        self.pos_panier = self.dessinerLancer(posBalleX, posBalleY, self.pos_panier, posRebond)
         self.clock.tick(60) #Max fps
         pygame.display.flip()
         self.ballonStatus = False
