@@ -16,7 +16,6 @@ class JeuBasket:
     def __init__(self):
         pygame.init()
         self.clock = pygame.time.Clock()
-import pygame as pg
 
         # Variables
         self.width = 960
@@ -188,6 +187,7 @@ import pygame as pg
                 if self.verifCoordonnes(pos_balle_x, pos_balle_y, pos_panier, indice_position):
                         panier_touche = True
                         self.score += 1
+                        #Play Song :
                         pos_panier = self.resetBall(pos_panier)
 
                 else:
