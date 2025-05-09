@@ -4,8 +4,6 @@
 import tkinter as t
 from tkinter import font
 import os
-import pygame
-from PIL import Image, ImageTk
 import threading
 
 

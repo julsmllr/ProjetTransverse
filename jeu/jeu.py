@@ -64,23 +64,24 @@ class JeuBasket:
         indice_position = 0
         panier_touche = False 
         while indice_position < len(pos_balle_x) and not panier_touche:
-            if (pos_balle_x[indice_position], pos_balle_y[indice_position]) == pos_rebond[0]:
-                #Play Song :
-                if len(pos_rebond) > 0:
-                    pos_rebond[0].pop(0)
+            if len(pos_rebond) > 0:
+                if (pos_balle_x[indice_position], pos_balle_y[indice_position]) == pos_rebond[0]:
+                    #Play Song :
+                    if len(pos_rebond) > 0:
+                        pos_rebond[0].pop(0)
+
+            if self.verifCoordonnes(pos_balle_x, pos_balle_y, pos_panier, indice_position):
+                    panier_touche = True
+                    self.score += 1
+                    pos_panier = self.resetBall(pos_panier)
+
             else:
-                if self.verifCoordonnes(pos_balle_x, pos_balle_y, pos_panier, indice_position):
-                        panier_touche = True
-                        self.score += 1
-                        pos_panier = self.resetBall(pos_panier)
+                    self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
+                    indice_position += 1
 
-                else:
-                        self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
-                        indice_position += 1
-
-            if not panier_touche:
-                self.essais += 1
-                pos_panier = self.resetBall(pos_panier)
+        if not panier_touche:
+            self.essais += 1
+            pos_panier = self.resetBall(pos_panier)
 
         return pos_panier
 
