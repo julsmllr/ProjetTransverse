@@ -15,9 +15,12 @@ from scriptPhysique.physique import calculate_trajectory
 class JeuBasket:
     def __init__(self):
         pygame.init()
+        pygame.font.init()
+
         self.clock = pygame.time.Clock()
-        
-        # Variables 
+        self.font = pygame.font.SysFont("../assets/fonts/Helvetica.ttf", 36)
+
+        # Variables
         self.width = 960
         self.height = 1080
         self.power = 150
@@ -74,6 +77,7 @@ class JeuBasket:
                     panier_touche = True
                     self.score += 1
                     pos_panier = self.resetBall(pos_panier)
+                    #Play Song :
 
             else:
                     self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
@@ -119,7 +123,8 @@ class JeuBasket:
 
         pygame.draw.rect(self.screen, RED, (pos_panier[0]+20, pos_panier[1]-50, 60, 50), 2)
         pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
-
+        titre_text = self.font.render(f"Score : {self.score}", True, BLACK)
+        self.screen.blit(titre_text, (30, 30))
         pygame.display.flip()
 
     def jeuLancer(self):
@@ -181,7 +186,6 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 ORANGE = (255, 165, 0)
 BROWN = (139, 69, 19)
-
 
 if __name__ == "__main__":
     jeu = JeuBasket()
