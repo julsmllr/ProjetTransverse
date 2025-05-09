@@ -6,7 +6,6 @@ from tkinter import font
 import os
 import threading
 
-
 os.sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from jeu.jeu import JeuBasket
 
@@ -26,6 +25,7 @@ dark_text_color = "#F8F8F8"
 # Polices
 primaryFont = "Helvetica"
 
+
 # =============================================================================
 # GESTIONNAIRES D'ÉVÉNEMENTS
 # =============================================================================
@@ -33,24 +33,31 @@ primaryFont = "Helvetica"
 def RightButtonClicked(event):
     gestionSettingsEntriesDirectionButtonPlus.config(image=GameSettingDirectionRightClicked)
 
+
 def RightButtonNotClicked(event):
     gestionSettingsEntriesDirectionButtonPlus.config(image=GameSettingDirectionRight)
+
 
 def LeftButtonClicked(event):
     gestionSettingsEntriesDirectionButtonMinus.config(image=GameSettingDirectionLeftClicked)
 
+
 def LeftButtonNotClicked(event):
     gestionSettingsEntriesDirectionButtonMinus.config(image=GameSettingDirectionLeft)
+
 
 def LaunchButtonNotClicked(event):
     gestionSettingsConfirmationButton.config(image=BoutonLancer)
 
+
 def LaunchButtonClicked(event):
     gestionSettingsConfirmationButton.config(image=BoutonLancerClicked)
+
 
 def GameClose(event):
     jeu.destroy()
     pygameGame.jeuQuit()
+
 
 # =============================================================================
 # CONFIGURATION INITIALE
@@ -61,9 +68,6 @@ jeu = t.Tk()
 jeu.title("Simulation de projectile")
 jeu.geometry("960x1080+0+0")
 jeu.bind('<Escape>', lambda e: GameClose(e))
-
-
-
 
 # Configuration de la police
 font_path = os.path.join("../assets/fonts/Helvetica.ttf")
@@ -146,19 +150,19 @@ gestionSettingsEntriesDirectionButtonPlus = t.Button(
     bg=bg_color,
     activebackground=bg_color,
     cursor="hand2",
-    command= pygameGame.setAngleMoins  
+    command=pygameGame.setAngleMoins
 )
 
 gestionSettingsEntriesDirectionButtonMinus = t.Button(gestionSettingsEntriesDirectionButtonFrame,
-    image=GameSettingDirectionLeft,
-    bd=0,
-    highlightthickness=0,
-    relief="flat",
-    bg=bg_color,
-    activebackground=bg_color,
-    cursor="hand2",
-    command= pygameGame.setAnglePlus
-)
+                                                      image=GameSettingDirectionLeft,
+                                                      bd=0,
+                                                      highlightthickness=0,
+                                                      relief="flat",
+                                                      bg=bg_color,
+                                                      activebackground=bg_color,
+                                                      cursor="hand2",
+                                                      command=pygameGame.setAnglePlus
+                                                      )
 
 # Configuration des événements des boutons
 gestionSettingsEntriesDirectionButtonPlus.bind("<Button-1>", RightButtonClicked)
@@ -200,10 +204,8 @@ gestionSettingsConfirmationButton = t.Button(
 )
 gestionSettingsConfirmationButton.pack(expand=True, ipady=20)
 
-
 gestionSettingsConfirmationButton.bind("<Button-1>", LaunchButtonClicked)
 gestionSettingsConfirmationButton.bind("<ButtonRelease-1>", LaunchButtonNotClicked)
-
 
 
 # =============================================================================
@@ -240,12 +242,11 @@ jeu.after(1000, misAJourScoreErreurs)
 def startGame():
     pygameGame.jeuLancer()
 
+
 if __name__ == "__main__":
     pygame_thread = threading.Thread(target=startGame)
-    pygame_thread.daemon = True #Fermer Pygame quand Tkinter se fermer
+    pygame_thread.daemon = True  # Fermer Pygame quand Tkinter se fermer
 
     pygame_thread.start()
 
-
     jeu.mainloop()
-    
