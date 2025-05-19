@@ -20,7 +20,9 @@ fenetre.title("EFREI BALLERS :) - Écran d'accueil")
 fenetre.geometry("%dx%d+0+0" % (fenetre.winfo_screenwidth(), fenetre.winfo_screenheight()))
 fenetre.attributes("-fullscreen", True)
 
-
+"""COMMENTAIRES : 
+Il faut que l'on change les règles, car on ne vise pas avec la souris mais avec les fleches, les niveaux ne deviennent pas plus dur juste cela monte
+"""
 try:
     image_path = "../assets/buttonImg/fond_regle_projet_tranverse.png"
     img = Image.open(image_path)
@@ -45,6 +47,8 @@ regles = """
 • Attention : plus tu marques, plus le niveau devient difficile !
 • Conseil : utilise les rebonds sur les murs pour t'aider :) !
 """
+
+
 label_regles = CTkLabel(fenetre, text=regles, font=("Arial", 30),
                         text_color="black", justify="left", bg_color="transparent")
 label_regles.pack(padx=20, pady=10)
@@ -73,6 +77,3 @@ if __name__ == "__main__":
 
 SINON C'EST BIEN BOSS(merci bibou)
 """
-
-if __name__ == "__main__":
-    fenetre.mainloop()
