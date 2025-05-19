@@ -32,7 +32,7 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
         y = y0 + vy * t + (g * t ** 2) / 2
 
         # Vérifier si le point est dans l'écran
-        if not (0 <= y <= SCREEN_HEIGHT):
+        if not (y <= SCREEN_HEIGHT):
             calcul_positions = False
         elif not (0 <= x <= SCREEN_WIDTH) and rebond:
             rebond = False

@@ -58,11 +58,11 @@ class JeuBasket:
     
     def setAnglePlus(self ):
         if self.angle < 180:
-            self.angle += 3
+            self.angle += 0.5
 
     def setAngleMoins(self):
         if self.angle > 0:
-            self.angle -= 3
+            self.angle -= 0.5
 
     def getAngle(self):
         return self.angle
@@ -110,14 +110,11 @@ class JeuBasket:
 
 
     def drawTrajectoryPreview(self, pos_x, pos_y):
-
-        if len(pos_x) < 100:
-            for i in range(0, len(pos_x), 20):
-                pygame.draw.circle(self.screen, WHITE, (pos_x[i], pos_y[i]), 5)
-        else:
-            for i in range(0, 100, 20):
-                pygame.draw.circle(self.screen, WHITE, (pos_x[i], pos_y[i]), 5)
-
+        index = 0
+        while index < len(pos_x) and pos_y[index] > pos_y[index+1]:
+            if (pos_x[index] > 0):
+                pygame.draw.circle(self.screen, ORANGE, (pos_x[index], pos_y[index]), 5)
+                index += 20
         pygame.display.flip()
 
     def drawGame(self, pos_ball, pos_panier):
@@ -150,10 +147,10 @@ class JeuBasket:
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
-                self.setPower(self.getPower()+1)
+                self.setPower(self.getPower()+0.5)
                 self.changes = True
             elif keys[pygame.K_DOWN]:
-                self.setPower(self.getPower()-1)
+                self.setPower(self.getPower()-0.5)
                 self.changes = True
             elif keys[pygame.K_LEFT]:
                 self.setAnglePlus()
