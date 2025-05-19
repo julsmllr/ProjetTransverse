@@ -11,7 +11,7 @@ son_rebond = None
 son_panier = None
 
 # Variable pour gérer le volume général (par défaut : 0.7)
-volume_general = 0.7
+volume_general = 0.5
 
 
 # --- Fonctions d'initialisation ---
@@ -19,8 +19,8 @@ volume_general = 0.7
 def initialiser_sons():
     global son_lancer, son_rebond, son_panier
 
-    #son_lancer = pygame.mixer.Sound("")
-    #son_rebond = pygame.mixer.Sound("")
+    son_lancer = pygame.mixer.Sound("Slingshot1.mp3")
+    son_rebond = pygame.mixer.Sound("basketball1.mp3")
     son_panier = pygame.mixer.Sound("swish.mp3")
 
     # Réglage du volume pour chaque son
@@ -29,7 +29,7 @@ def initialiser_sons():
 
 # --- Fonctions pour jouer les sons ---
 # Joue le son du lancer
-def jouer_son_lancer():
+def jouer_son_lancer(volume=0.1):
     if son_lancer:
         son_lancer.play()
 
@@ -48,8 +48,8 @@ def jouer_son_panier():
 
 # --- Musique de fond ---
 # Joue la musique de fond en boucle
-def jouer_musique_fond(volume=0.5):
-    pygame.mixer.music.load("Bit_Adventure.wav")
+def jouer_musique_fond(volume=0.2):
+    pygame.mixer.music.load("PhSu.mp3")
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play(-1)  # -1 pour une boucle infinie
 

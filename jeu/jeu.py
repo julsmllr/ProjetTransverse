@@ -4,6 +4,8 @@ import pygame
 import sys
 import os
 import random
+from gestionSon import *
+
 
 # Pour avoir le script Physique (Essayer de simplifier ça)
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
@@ -16,7 +18,8 @@ class JeuBasket:
     def __init__(self):
         pygame.init()
         pygame.font.init()
-
+        initialiser_sons()
+        jouer_musique_fond(volume=0.5)
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("../assets/fonts/Helvetica.ttf", 36)
 
@@ -69,15 +72,16 @@ class JeuBasket:
         while indice_position < len(pos_balle_x) and not panier_touche:
             if len(pos_rebond) > 0:
                 if (pos_balle_x[indice_position], pos_balle_y[indice_position]) == pos_rebond[0]:
-                    #Play Song :
+                    print("true")
                     if len(pos_rebond) > 0:
                         pos_rebond[0].pop(0)
 
             if self.verifCoordonnes(pos_balle_x, pos_balle_y, pos_panier, indice_position):
                     panier_touche = True
+                    jouer_son_panier()
                     self.score += 1
                     pos_panier = self.resetBall(pos_panier)
-                    #Play Song :
+
 
             else:
                     self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
@@ -148,6 +152,7 @@ class JeuBasket:
                         self.setAngleMoins()
                     elif event.key == pygame.K_SPACE:
                         self.ballonLancer()
+                        jouer_son_lancer(volume=0.1)
 
             if self.ballonStatus:
                 self.dessinBallonLancer()
@@ -176,6 +181,7 @@ class JeuBasket:
 
 
     def jeuQuit(self):
+        arreter_musique_fond()
         pygame.quit()
         sys.exit()
 
