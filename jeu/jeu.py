@@ -19,7 +19,7 @@ class JeuBasket:
         pygame.init()
         pygame.font.init()
         initialiser_sons()
-        jouer_musique_fond(volume=0.5)
+        jouer_musique_fond(volume=0.1 )
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("../assets/fonts/Helvetica.ttf", 36)
 
@@ -75,7 +75,7 @@ class JeuBasket:
             if len(pos_rebond) > 0:
                 print((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_rebond[0])
                 if (pos_rebond[0][0]-5, pos_rebond[0][1]-5) <= (pos_balle_x[indice_position], pos_balle_y[indice_position]) <= (pos_rebond[0][0]+5, pos_rebond[0][1]+5):
-                    #Play Song :
+                    jouer_son_rebond()
                     print("Yes")
                     if len(pos_rebond) > 0:
                         pos_rebond.pop(0)
@@ -192,7 +192,7 @@ class JeuBasket:
 
 
     def jeuQuit(self):
-        arreter_musique_fond()
+
         pygame.quit()
         sys.exit()
 
