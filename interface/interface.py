@@ -12,11 +12,14 @@ def lancer_jeu():
 # Création de la fenêtre principale
 fenetre = tk.Tk()
 fenetre.title("EFREI BALLERS :) - Écran d'accueil")
-fenetre.geometry("500x400")
 fenetre.config(bg="#282c34")
+larg=fenetre.winfo_screenwidth()
+hauteur=fenetre.winfo_screenheight()
+fenetre.geometry("%dx%d+0+0" % (larg, hauteur))
+
 
 # Titre du jeu
-titre = tk.Label(fenetre, text="EFREI BALLERS(donnez titre svp)", font=("Arial", 24, "bold"), fg="pink", bg="#282c34")
+titre = tk.Label(fenetre, text="EFREI BALLERS(donnez titre svp)", font=("Arial", 40, "bold"), fg="pink", bg="#282c34")
 titre.pack(pady=20)
 
 # Règles du jeu
@@ -26,11 +29,11 @@ regles = """
 • Attention : Plus tu marques, plus le niveau devient difficile !
 • Conseil: utilise les rebonds sur les murs pour t'aider :) !
 """
-label_regles = tk.Label(fenetre, text=regles, font=("Arial", 12), fg="white", bg="#282c34", justify="left")
+label_regles = tk.Label(fenetre, text=regles, font=("Arial",30 ), fg="white", bg="#282c34", justify="left")
 label_regles.pack(padx=20, pady=10)
 
 # Bouton pour commencer
-bouton_commencer = tk.Button(fenetre, text="Démarrer l'expérience", font=("Arial", 20), bg="#61afef", fg="white", command=lancer_jeu)
+bouton_commencer = tk.Button(fenetre, text="Démarrer l'expérience", font=("Arial", 40), bg="#61afef", fg="white", command=lancer_jeu)
 bouton_commencer.pack(pady=20)
 
 
