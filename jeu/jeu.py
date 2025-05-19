@@ -73,7 +73,6 @@ class JeuBasket:
         panier_touche = False 
         while indice_position < len(pos_balle_x) and not panier_touche:
             if len(pos_rebond) > 0:
-                print((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_rebond[0])
                 if (pos_rebond[0][0]-5, pos_rebond[0][1]-5) <= (pos_balle_x[indice_position], pos_balle_y[indice_position]) <= (pos_rebond[0][0]+5, pos_rebond[0][1]+5):
                     jouer_son_rebond()
                     print("Yes")
