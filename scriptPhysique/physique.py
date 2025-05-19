@@ -3,7 +3,7 @@ from math import cos, sin, radians, atan2, degrees, sqrt
 def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale=(0, 0)):
     # Constantes
     g = 9.81
-    dt = 0.15  # Intervalle de temps entre chaque point
+    dt = 0.05  # Intervalle de temps entre chaque point
     SCREEN_WIDTH = size[0]
     SCREEN_HEIGHT = size[1]
     REBONDS_MAX = 1
