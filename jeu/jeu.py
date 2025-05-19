@@ -23,6 +23,8 @@ class JeuBasket:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("../assets/fonts/Helvetica.ttf", 36)
 
+
+        self.changes = True
         # Variables
         self.width = 1920
         self.height = 1080
@@ -92,7 +94,6 @@ class JeuBasket:
         if not panier_touche:
             self.essais += 1
             pos_panier = self.resetBall(pos_panier)
-
         return pos_panier
 
     def verifCoordonnes(self, pos_balle_x, pos_balle_y, pos_panier, indice_position):
@@ -104,7 +105,7 @@ class JeuBasket:
 
     # Méthodes pour jeu
 
-    def resetBall(self, pos_panier): 
+    def resetBall(self, pos_panier):
         pos_panier = [random.randint(100, self.width - 100), random.randint(200, self.height - 250)]
         return pos_panier
 
@@ -144,23 +145,31 @@ class JeuBasket:
                         pygame.quit()
                         sys.exit()
                     elif event.key == pygame.K_SPACE:
+                        self.changes = True
                         self.ballonLancer()
                         jouer_son_lancer(volume=0.1)
 
             keys = pygame.key.get_pressed()
             if keys[pygame.K_UP]:
                 self.setPower(self.getPower()+1)
+                self.changes = True
             elif keys[pygame.K_DOWN]:
                 self.setPower(self.getPower()-1)
+                self.changes = True
             elif keys[pygame.K_LEFT]:
                 self.setAnglePlus()
+                self.changes = True
             elif keys[pygame.K_RIGHT]:
                 self.setAngleMoins()
-            if self.ballonStatus:
-                self.dessinBallonLancer()
-            else:
-                self.dessinBallonNonLancer()
+                self.changes = True
 
+            if self.changes :
+                if self.ballonStatus:
+                    self.dessinBallonLancer()
+                    self.changes = True
+                else:
+                    self.dessinBallonNonLancer()
+                    self.changes = False
         pygame.quit()
 
     def ballonLancer(self):
