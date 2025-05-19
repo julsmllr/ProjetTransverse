@@ -24,9 +24,9 @@ class JeuBasket:
         self.font = pygame.font.SysFont("../assets/fonts/Helvetica.ttf", 36)
 
         # Variables
-        self.width = 960
+        self.width = 1920
         self.height = 1080
-        self.power = 150
+        self.power = 90
         self.angle = 90
         self.essais = 0
         self.max_essais = 15
@@ -45,7 +45,7 @@ class JeuBasket:
         self.ball_img = pygame.image.load("../assets/img/basketball.png")
         self.ball_img = pygame.transform.scale(self.ball_img, (50, 50))
         self.hoop_img = pygame.image.load("../assets/img/hoop.png")
-        self.hoop_img = pygame.transform.scale(self.hoop_img, (100, 50))
+        self.hoop_img = pygame.transform.scale(self.hoop_img, (150, 250))
 
     # Set et Get
     def setPower(self, power):
@@ -71,10 +71,12 @@ class JeuBasket:
         panier_touche = False 
         while indice_position < len(pos_balle_x) and not panier_touche:
             if len(pos_rebond) > 0:
-                if (pos_balle_x[indice_position], pos_balle_y[indice_position]) == pos_rebond[0]:
-                    print("true")
+                print((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_rebond[0])
+                if (pos_rebond[0][0]-5, pos_rebond[0][1]-5) <= (pos_balle_x[indice_position], pos_balle_y[indice_position]) <= (pos_rebond[0][0]+5, pos_rebond[0][1]+5):
+                    #Play Song :
+                    print("Yes")
                     if len(pos_rebond) > 0:
-                        pos_rebond[0].pop(0)
+                        pos_rebond.pop(0)
 
             if self.verifCoordonnes(pos_balle_x, pos_balle_y, pos_panier, indice_position):
                     panier_touche = True
@@ -94,8 +96,8 @@ class JeuBasket:
         return pos_panier
 
     def verifCoordonnes(self, pos_balle_x, pos_balle_y, pos_panier, indice_position):
-        if pos_panier[0] < pos_balle_x[indice_position] <pos_panier[0]+100:
-            if (pos_panier[1]-25 < pos_balle_y[indice_position] <pos_panier[1]) and (pos_balle_y[indice_position-10] < pos_balle_y[indice_position]):
+        if pos_panier[0]+25 < pos_balle_x[indice_position] <pos_panier[0]+125:
+            if (pos_panier[1]+50 < pos_balle_y[indice_position] <pos_panier[1]+75) and (pos_balle_y[indice_position-10] < pos_balle_y[indice_position]):
                 return True
             else: return False
         else: return False
@@ -109,11 +111,11 @@ class JeuBasket:
 
     def drawTrajectoryPreview(self, pos_x, pos_y):
 
-        if len(pos_x) < 50:
-            for i in range(0, len(pos_x), 10):
+        if len(pos_x) < 100:
+            for i in range(0, len(pos_x), 20):
                 pygame.draw.circle(self.screen, WHITE, (pos_x[i], pos_y[i]), 5)
         else:
-            for i in range(0, 50, 10):
+            for i in range(0, 100, 20):
                 pygame.draw.circle(self.screen, WHITE, (pos_x[i], pos_y[i]), 5)
 
         pygame.display.flip()
@@ -121,11 +123,10 @@ class JeuBasket:
     def drawGame(self, pos_ball, pos_panier):
         
         self.screen.blit(self.background, (0, 0))
-
         self.screen.blit(self.hoop_img, (pos_panier[0], pos_panier[1]))
         self.screen.blit(self.ball_img, (pos_ball[0]-25, pos_ball[1]-25))
 
-        pygame.draw.rect(self.screen, RED, (pos_panier[0]+20, pos_panier[1]-50, 60, 50), 2)
+        pygame.draw.rect(self.screen, RED, (pos_panier[0]+25, pos_panier[1]+50, 100, 50), 2)
         pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
         titre_text = self.font.render(f"Score : {self.score}", True, BLACK)
         self.screen.blit(titre_text, (30, 30))
@@ -142,18 +143,19 @@ class JeuBasket:
                     if event.key == pygame.K_ESCAPE:
                         pygame.quit()
                         sys.exit()
-                    elif event.key == pygame.K_UP:
-                        self.setPower(self.getPower()+1)
-                    elif event.key == pygame.K_DOWN:
-                        self.setPower(self.getPower()-1)
-                    elif event.key == pygame.K_LEFT:
-                        self.setAnglePlus()
-                    elif event.key == pygame.K_RIGHT:
-                        self.setAngleMoins()
                     elif event.key == pygame.K_SPACE:
                         self.ballonLancer()
                         jouer_son_lancer(volume=0.1)
 
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_UP]:
+                self.setPower(self.getPower()+1)
+            elif keys[pygame.K_DOWN]:
+                self.setPower(self.getPower()-1)
+            elif keys[pygame.K_LEFT]:
+                self.setAnglePlus()
+            elif keys[pygame.K_RIGHT]:
+                self.setAngleMoins()
             if self.ballonStatus:
                 self.dessinBallonLancer()
             else:
