@@ -76,7 +76,6 @@ class JeuBasket:
             if len(pos_rebond) > 0:
                 if (pos_rebond[0][0]-5, pos_rebond[0][1]-5) <= (pos_balle_x[indice_position], pos_balle_y[indice_position]) <= (pos_rebond[0][0]+5, pos_rebond[0][1]+5):
                     jouer_son_rebond()
-                    print("Yes")
                     if len(pos_rebond) > 0:
                         pos_rebond.pop(0)
 
@@ -113,7 +112,6 @@ class JeuBasket:
     def drawTrajectoryPreview(self, pos_x, pos_y):
         index = 1
         while index < len(pos_x) and pos_y[index-1] > pos_y[index]:
-            print(pos_y[index], pos_y[index-1], len(pos_x))
             if (pos_x[index] > 0):
                 pygame.draw.circle(self.screen, ORANGE, (pos_x[index], pos_y[index]), 5)
                 index += 20
