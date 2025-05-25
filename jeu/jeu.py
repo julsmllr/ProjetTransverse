@@ -25,6 +25,7 @@ class JeuBasket:
 
 
         self.changes = True
+
         # Variables
         self.width = 1920
         self.height = 1080
@@ -97,7 +98,7 @@ class JeuBasket:
 
     def verifCoordonnes(self, pos_balle_x, pos_balle_y, pos_panier, indice_position):
         if pos_panier[0]+25 < pos_balle_x[indice_position] <pos_panier[0]+125:
-            if (pos_panier[1]+50 < pos_balle_y[indice_position] <pos_panier[1]+75) and (pos_balle_y[indice_position-10] < pos_balle_y[indice_position]):
+            if (pos_panier[1]+75 < pos_balle_y[indice_position] <pos_panier[1]+100) and (pos_balle_y[indice_position-10] < pos_balle_y[indice_position]):
                 return True
             else: return False
         else: return False
@@ -105,13 +106,14 @@ class JeuBasket:
     # Méthodes pour jeu
 
     def resetBall(self, pos_panier):
-        pos_panier = [random.randint(100, self.width - 100), random.randint(200, self.height - 250)]
+        pos_panier = [random.randint(100, self.width - 100), random.randint(200, self.height - 350)]
         return pos_panier
 
 
     def drawTrajectoryPreview(self, pos_x, pos_y):
-        index = 0
-        while index < len(pos_x) and pos_y[index] > pos_y[index+1]:
+        index = 1
+        while index < len(pos_x) and pos_y[index-1] > pos_y[index]:
+            print(pos_y[index], pos_y[index-1], len(pos_x))
             if (pos_x[index] > 0):
                 pygame.draw.circle(self.screen, ORANGE, (pos_x[index], pos_y[index]), 5)
                 index += 20
@@ -123,7 +125,7 @@ class JeuBasket:
         self.screen.blit(self.hoop_img, (pos_panier[0], pos_panier[1]))
         self.screen.blit(self.ball_img, (pos_ball[0]-25, pos_ball[1]-25))
 
-        pygame.draw.rect(self.screen, RED, (pos_panier[0]+25, pos_panier[1]+50, 100, 50), 2)
+        pygame.draw.rect(self.screen, RED, (pos_panier[0]+25, pos_panier[1]+75, 100, 25), 2)
         pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
         titre_text = self.font.render(f"Score : {self.score}", True, BLACK)
         self.screen.blit(titre_text, (30, 30))
