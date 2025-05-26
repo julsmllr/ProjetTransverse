@@ -1,5 +1,6 @@
-# ---------------------- IMPORTATIONS ---------------------- # 
-
+# =============================================================================
+# IMPORTATIONS
+# =============================================================================
 import pygame
 import sys
 import os
@@ -11,8 +12,9 @@ from gestionSon import *
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from scriptPhysique.physique import calculate_trajectory
 
-
-# ---------------------- PROGRAMME ---------------------- # 
+# =============================================================================
+# PROGRAMME
+# =============================================================================
 
 class JeuBasket:
     def __init__(self):
