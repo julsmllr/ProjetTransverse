@@ -59,11 +59,11 @@ class JeuBasket:
     
     def setAnglePlus(self ):
         if self.angle < 180:
-            self.angle += 0.5
+            self.angle += 0.3
 
     def setAngleMoins(self):
         if self.angle > 0:
-            self.angle -= 0.5
+            self.angle -= 0.3
 
     def getAngle(self):
         return self.angle
