@@ -43,6 +43,12 @@ class JeuBasket:
         # Ecrans 
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)      
         pygame.display.set_caption("Jeu de Basket 2D")
+        self.clock.tick(60)  # Max fps
+
+        # Bonus
+        self.bonus = Bonus()
+        self.BonusState = False
+        self.bonusCoord = (-1,-1)
 
     def chargementTextureJeu(self):
         self.background = pygame.image.load("../assets/img/background.png")
@@ -61,11 +67,11 @@ class JeuBasket:
     
     def setAnglePlus(self ):
         if self.angle < 180:
-            self.angle += 0.3
+            self.angle += 0.2
 
     def setAngleMoins(self):
         if self.angle > 0:
-            self.angle -= 0.3
+            self.angle -= 0.2
 
     def getAngle(self):
         return self.angle
@@ -87,7 +93,6 @@ class JeuBasket:
                     panier_touche = True
                     jouer_son_panier()
                     self.score += 1
-                    print(pos_rebond)
                     if rebond:
                         self.score += 1
                     pos_panier = self.resetBall(pos_panier)
@@ -96,10 +101,16 @@ class JeuBasket:
             else:
                     self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
                     indice_position += 1
+            print(indice_position)
+            if (self.bonusCoord[0]-50 <= pos_balle_x[indice_position]<= self.bonusCoord[0]+50) and (self.bonusCoord[1]-50 <= pos_balle_y[indice_position]<=self.bonusCoord[1]+50):
+                self.bonus.pointsBonus(self.essais, self.score)
+                indice_position += 1
 
         if not panier_touche:
             self.essais += 1
             pos_panier = self.resetBall(pos_panier)
+
+        self.bonusCoord = self.bonus.nouveauBonus(self.width, self.height, self.screen)
         return pos_panier
 
     def verifCoordonnes(self, pos_balle_x, pos_balle_y, pos_panier, indice_position):
@@ -125,7 +136,7 @@ class JeuBasket:
         pygame.display.flip()
 
     def drawGame(self, pos_ball, pos_panier):
-        
+
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.hoop_img, (pos_panier[0], pos_panier[1]))
         self.screen.blit(self.ball_img, (pos_ball[0]-25, pos_ball[1]-25))
@@ -135,10 +146,9 @@ class JeuBasket:
         pygame.display.flip()
 
     def showScore(self):
-        pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
-        score_text = self.font.render(f"Score : {self.score}", True, BLACK)
+        score_text = self.font.render(f"Score : {self.score}", True, WHITE)
         self.screen.blit(score_text, (30, 30))
-        essai_text = self.font.render(f"Erreurs : {self.essais}/{self.max_essais}", True, BLACK)
+        essai_text = self.font.render(f"Erreurs : {self.essais}/{self.max_essais}", True, WHITE)
         self.screen.blit(essai_text, (30, 80))
 
     def jeuLancer(self):
@@ -178,6 +188,7 @@ class JeuBasket:
                 else:
                     self.dessinBallonNonLancer()
                     self.changes = False
+
         pygame.quit()
 
     def ballonLancer(self):
@@ -187,45 +198,65 @@ class JeuBasket:
         posBalleX, posBalleY, posRebond = calculate_trajectory(self.power, self.angle,(self.width, self.height), position_initiale=self.pos_joueur)
         self.drawGame(self.pos_joueur, self.pos_panier)
         self.drawTrajectoryPreview(posBalleX, posBalleY)
-        self.clock.tick(60) #Max fps
         pygame.display.flip()
 
     def dessinBallonLancer(self):
         posBalleX, posBalleY, posRebond= calculate_trajectory(self.power, self.angle, (self.width, self.height), position_initiale=self.pos_joueur)
         self.pos_panier = self.dessinerLancer(posBalleX, posBalleY, self.pos_panier, posRebond)
-        self.clock.tick(60) #Max fps
         pygame.display.flip()
         self.ballonStatus = False
-    
-
 
     def jeuQuit(self):
-
         pygame.quit()
         sys.exit()
 
 
 class Bonus:
     def __init__(self):
-        self.images = {"coeur": "../assets/img/coeur_bonus.png", "bonus_1": "../assets/img/bonus_1.png", "bonus_2": "../assets/img/bonus_2.png"}
-        self.bonus = "coeur" #ou "bonus 1" ou "bonus 2"
-        self.coordonnees = []
+        self.images = {"coeur": "../assets/img/coeur_bonus.png", "bonus_1": "../assets/img/coeur_bonus_hardcore.png", "bonus_2": "../assets/img/coeur_bonus_hardcore.png"}
+        self.bonus = ""
+        self.coordonnees = (0, 0)
 
-        def choixBonus(self):
-            keys = self.images.keys()
-            self.bonus = keys[random.randint(0, len(keys)-1)]
+    def choixBonus(self):
+        keys = list(self.images.keys())
+        self.bonus = keys[random.randint(0, len(keys)-1)]
 
-        def pointsPoints(self):
-            if self.bonus == "coeur":
-                #erreus -1
-                pass
-            elif self.bonus == "bonus_1":
-                # score += 1
-                pass
-            else:
-                # score += 2
-                pass
 
+
+    def generateBonus(self, width, height):
+        self.choixBonus()
+        coordX = random.randint(100, width - 100)
+        coordY = random.randint(200, height - 350)
+        self.coordonnees = (coordX, coordY)
+
+    def retireErreus(self, erreurs):
+        erreurs - 1
+
+    def ajoutScore(self, score, ajout):
+        score + ajout
+
+    def pointsBonus(self, erreurs, score):
+        if self.bonus == "coeur":
+            self.retireErreus(self, erreurs)
+        elif self.bonus == "bonus_1":
+            self.ajoutScore(self, score, 1)
+        else:
+            self.ajoutScore(self, score, 2)
+
+    def dessinerBonus(self, bonusState, width, height, screen):
+        if bonusState:
+            image = pygame.image.load(self.images[self.bonus])
+            image = pygame.transform.scale(image, (50, 50))
+            screen.blit(image, (self.coordonnees[0], self.coordonnees[1]))
+            pygame.display.flip()
+
+    def nouveauBonus(self, width, height, screen):
+        if (random.randint(1, 4) == 1):
+            self.generateBonus(width, height)
+            self.dessinerBonus(width, height, screen)
+        else:
+            return (-1, -1)
+        return (self.coordonnees[0], self.coordonnees[1])
 # Couleurs
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
