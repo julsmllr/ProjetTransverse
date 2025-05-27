@@ -41,10 +41,13 @@ def jouer_son_panier():
 
 
 def jouer_musique_fond(volume=0.1):
-    pygame.mixer.music.load("EuSentu.mp3")
+    pygame.mixer.music.load("WiiMusic.mp3")
     #pygame.mixer.music.load("WiiMusic.mp3")
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play(-1)
 
 
-
+def jouer_musique_heilman(volume=0.1):
+    pygame.mixer.music.load("EuSentu.mp3")
+    pygame.mixer.music.set_volume(volume)
+    pygame.mixer.music.play(-1)
