@@ -33,6 +33,13 @@ try:
 except Exception as e:
     print(f"Erreur lors du chargement de l'image de fond : {e}")
 
+"""
+COMMENTAIRE : 
+Je veux que si on nous pose des questions sur le try/except, on soit capable de dire pourquoi on a fait ça, parce que c'est très compliqué pour rien 
+
+Il faut refaire les règles, on ne vise pas avec la souris. Tous les controles se font par rapport aux flèches, le niveau des tirs ne devient pas plus dur, juste on a le sol qui monte
+"""
+
 # Widgets
 titre = CTkLabel(
     master=fenetre,
