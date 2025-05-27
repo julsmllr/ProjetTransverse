@@ -271,7 +271,8 @@ def afficher_interface():
         img = Image.open(image_path)
         img = img.resize((fenetre.winfo_screenwidth(), fenetre.winfo_screenheight()), Image.LANCZOS)
         bg_image = ImageTk.PhotoImage(img)
-        background_label = CTkLabel(fenetre, image=bg_image, text="")
+
+        background_label = CTkLabel(fenetre, image=bg_image, text="")  # customtkinter version
         background_label.place(x=0, y=0, relwidth=1, relheight=1)
     except Exception as e:
         print(f"Erreur lors du chargement de l'image de fond : {e}")
