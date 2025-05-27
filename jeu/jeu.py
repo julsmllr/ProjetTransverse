@@ -73,11 +73,13 @@ class JeuBasket:
     # Méthodes liées aux coordonnées
     def dessinerLancer(self, pos_balle_x, pos_balle_y, pos_panier, pos_rebond):
         indice_position = 0
-        panier_touche = False 
+        panier_touche = False
+        rebond = False
         while indice_position < len(pos_balle_x) and not panier_touche:
             if len(pos_rebond) > 0:
                 if (pos_rebond[0][0]-5, pos_rebond[0][1]-5) <= (pos_balle_x[indice_position], pos_balle_y[indice_position]) <= (pos_rebond[0][0]+5, pos_rebond[0][1]+5):
                     jouer_son_rebond()
+                    rebond = True
                     if len(pos_rebond) > 0:
                         pos_rebond.pop(0)
 
@@ -85,6 +87,9 @@ class JeuBasket:
                     panier_touche = True
                     jouer_son_panier()
                     self.score += 1
+                    print(pos_rebond)
+                    if rebond:
+                        self.score += 1
                     pos_panier = self.resetBall(pos_panier)
 
 
@@ -198,6 +203,28 @@ class JeuBasket:
 
         pygame.quit()
         sys.exit()
+
+
+class Bonus:
+    def __init__(self):
+        self.images = {"coeur": "../assets/img/coeur_bonus.png", "bonus_1": "../assets/img/bonus_1.png", "bonus_2": "../assets/img/bonus_2.png"}
+        self.bonus = "coeur" #ou "bonus 1" ou "bonus 2"
+        self.coordonnees = []
+
+        def choixBonus(self):
+            keys = self.images.keys()
+            self.bonus = keys[random.randint(0, len(keys)-1)]
+
+        def pointsPoints(self):
+            if self.bonus == "coeur":
+                #erreus -1
+                pass
+            elif self.bonus == "bonus_1":
+                # score += 1
+                pass
+            else:
+                # score += 2
+                pass
 
 # Couleurs
 WHITE = (255, 255, 255)
