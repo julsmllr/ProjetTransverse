@@ -126,10 +126,15 @@ class JeuBasket:
         self.screen.blit(self.ball_img, (pos_ball[0]-25, pos_ball[1]-25))
 
         pygame.draw.rect(self.screen, RED, (pos_panier[0]+25, pos_panier[1]+75, 100, 25), 2)
-        pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
-        titre_text = self.font.render(f"Score : {self.score}", True, BLACK)
-        self.screen.blit(titre_text, (30, 30))
+        self.showScore()
         pygame.display.flip()
+
+    def showScore(self):
+        pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
+        score_text = self.font.render(f"Score : {self.score}", True, BLACK)
+        self.screen.blit(score_text, (30, 30))
+        essai_text = self.font.render(f"Erreurs : {self.essais}/{self.max_essais}", True, BLACK)
+        self.screen.blit(essai_text, (30, 80))
 
     def jeuLancer(self):
         self.chargementTextureJeu()
