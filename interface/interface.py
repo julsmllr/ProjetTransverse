@@ -63,7 +63,7 @@ Quelques informations pour que tu passes une bonne expérience...
 label_regles = CTkLabel(
     master=fenetre,
     text=regles,
-    font=("Arial", 30),
+    font=("Arial", 20),
     text_color="black",
     justify="left",
     bg_color="white"
