@@ -44,9 +44,13 @@ titre = CTkLabel(
 titre.pack(pady=20)
 
 regles = """
+Quelques informations pour que tu passes une bonne expérience... 
+
 • Utilise ta souris pour viser et tirer la balle sur l'arceau.
 • Vise le panier pour accéder au niveau suivant.
-• Attention : plus tu marques, plus le niveau devient difficile !
+• Dans ce jeu , tu peux te déplacer grâce à chacune des flèches de ton clavier.
+• Le chronomètre te permet de pouvoir suivre ta progression en temps réel.
+• A toi de te surpasser pour réaliser le meilleur temps de jeu possible.
 • Conseil : utilise les rebonds sur les murs pour t'aider :) !
 """
 label_regles = CTkLabel(
