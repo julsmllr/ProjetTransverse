@@ -100,17 +100,18 @@ class JeuBasket:
 
             else:
                     self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
+                    if (self.bonusCoord[0] - 50 <= pos_balle_x[indice_position] <= self.bonusCoord[0] + 50) and (
+                            self.bonusCoord[1] - 50 <= pos_balle_y[indice_position] <= self.bonusCoord[1] + 50):
+                        self.bonus.pointsBonus(self.essais, self.score)
+
                     indice_position += 1
-            print(indice_position)
-            if (self.bonusCoord[0]-50 <= pos_balle_x[indice_position]<= self.bonusCoord[0]+50) and (self.bonusCoord[1]-50 <= pos_balle_y[indice_position]<=self.bonusCoord[1]+50):
-                self.bonus.pointsBonus(self.essais, self.score)
-                indice_position += 1
+
 
         if not panier_touche:
             self.essais += 1
             pos_panier = self.resetBall(pos_panier)
 
-        self.bonusCoord = self.bonus.nouveauBonus(self.width, self.height, self.screen)
+        self.bonusCoord = self.bonus.nouveauBonus(self.BonusState, self.width, self.height, self.screen)
         return pos_panier
 
     def verifCoordonnes(self, pos_balle_x, pos_balle_y, pos_panier, indice_position):
@@ -237,11 +238,11 @@ class Bonus:
 
     def pointsBonus(self, erreurs, score):
         if self.bonus == "coeur":
-            self.retireErreus(self, erreurs)
+            self.retireErreus(erreurs)
         elif self.bonus == "bonus_1":
-            self.ajoutScore(self, score, 1)
+            self.ajoutScore(score, 1)
         else:
-            self.ajoutScore(self, score, 2)
+            self.ajoutScore(score, 2)
 
     def dessinerBonus(self, bonusState, width, height, screen):
         if bonusState:
@@ -249,11 +250,13 @@ class Bonus:
             image = pygame.transform.scale(image, (50, 50))
             screen.blit(image, (self.coordonnees[0], self.coordonnees[1]))
             pygame.display.flip()
+            print("Flip Bonus")
 
-    def nouveauBonus(self, width, height, screen):
-        if (random.randint(1, 4) == 1):
+    def nouveauBonus(self,bonusState, width, height, screen):
+        a = (random.randint(1, 2))
+        if a== 1:
             self.generateBonus(width, height)
-            self.dessinerBonus(width, height, screen)
+            self.dessinerBonus(bonusState, width, height, screen)
         else:
             return (-1, -1)
         return (self.coordonnees[0], self.coordonnees[1])
