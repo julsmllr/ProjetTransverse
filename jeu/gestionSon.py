@@ -18,7 +18,7 @@ volume_general = 0.5
 def initialiser_sons():
     global son_lancer, son_rebond, son_panier
 
-    son_lancer = pygame.mixer.Sound("../assets/soundEffect/Slingshot1.mp3")
+    son_lancer = pygame.mixer.Sound("../assets/soundEffect/Throwing.mp3")
     son_rebond = pygame.mixer.Sound("../assets/soundEffect/Dribble1.mp3")
     son_panier = pygame.mixer.Sound("../assets/soundEffect/swish.mp3")
 
@@ -41,13 +41,12 @@ def jouer_son_panier():
 
 
 def jouer_musique_fond(volume=0.1):
-    pygame.mixer.music.load("../assets/soundEffect/EuSentu.mp3")
-    #pygame.mixer.music.load("WiiMusic.mp3")
+    pygame.mixer.music.load("../assets/soundEffect/WiiMusic.mp3")
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play(-1)
 
 
 def jouer_musique_heilman(volume=0.1):
-    pygame.mixer.music.load("EuSentu.mp3")
+    pygame.mixer.music.load("../assets/soundEffect/EuSentu.mp3")
     pygame.mixer.music.set_volume(volume)
     pygame.mixer.music.play(-1)
