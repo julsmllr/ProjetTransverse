@@ -15,15 +15,14 @@ def afficher_interface():
 
     set_appearance_mode("Dark")
     fenetre = CTk()
+    fenetre.bind('<Escape>', lambda e: fenetre.destroy())
     fenetre.title("EFREI BALLERS :) - Écran d'accueil")
-    fenetre.geometry(f"{fenetre.winfo_screenwidth()}x{fenetre.winfo_screenheight()}+0+0")
+    fenetre.geometry("1920x1080")
     fenetre.attributes("-fullscreen", True)
 
 
-    image_path = os.path.join("..", "assets", "buttonImg", "fond_regle_projet_tranverse.png")
-    img = Image.open(image_path)
-    img = img.resize((fenetre.winfo_screenwidth(), fenetre.winfo_screenheight()), Image.LANCZOS)
-    bg_image = ImageTk.PhotoImage(img)
+    img_path = "../assets/buttonImg/fond_regle_projet_tranverse.png"
+    bg_image = CTkImage(Image.open(img_path), size=(1920, 1080))
 
     background_label = CTkLabel(fenetre, image=bg_image, text="")  # customtkinter version
     background_label.place(x=0, y=0, relwidth=1, relheight=1)
