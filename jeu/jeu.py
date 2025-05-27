@@ -148,7 +148,7 @@ class JeuBasket:
                         jouer_son_lancer(volume=0.1)
 
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_UP]:
+            if keys[pygame.K_UP] and self.power < 400:
                 self.setPower(self.getPower()+0.5)
                 self.changes = True
             elif keys[pygame.K_DOWN]:
