@@ -204,4 +204,4 @@ BROWN = (139, 69, 19)
 
 if __name__ == "__main__":
     jeu = JeuBasket()
-    jeu.jeuLancer()    
+    jeu.jeuLancer()  
