@@ -6,6 +6,13 @@ from tkinter import font
 import os
 import threading
 
+from customtkinter import *
+
+from tkinter import messagebox
+
+from PIL import Image, ImageTk
+
+
 
 os.sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from jeu.jeu import JeuBasket
@@ -239,6 +246,21 @@ jeu.after(1000, misAJourScoreErreurs)
 
 def startGame():
     pygameGame.jeuLancer()
+
+
+#Debut de code tkinter->interface.py
+
+def affichage_interface() :
+
+
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     pygame_thread = threading.Thread(target=startGame)
