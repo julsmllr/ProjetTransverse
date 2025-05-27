@@ -1,4 +1,4 @@
-from math import cos, sin, radians, atan2, degrees, sqrt
+from math import cos, sin, radians, atan, degrees, sqrt
 
 def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale=(0, 0)):
     # Constantes
@@ -7,7 +7,7 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
     SCREEN_WIDTH = size[0]
     SCREEN_HEIGHT = size[1]
     REBONDS_MAX = 1
-    POURCENTS_REBOND = 0.5
+    POURCENTS_REBOND = 0.7
     POSITION_REBOND = []
     # Conversion en radians
     angle_rad = radians(angle_degres)
@@ -32,14 +32,15 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
         y = y0 + vy * t + (g * t ** 2) / 2
 
         # Vérifier si le point est dans l'écran
-        if not (0 <= y <= SCREEN_HEIGHT):
+        if not (y <= SCREEN_HEIGHT):
             calcul_positions = False
         elif not (0 <= x <= SCREEN_WIDTH) and rebond:
             rebond = False
             POSITION_REBOND.append((x, y))
             dx = vx
             dy = g*t+vy
-            new_angle = degrees(atan2(dy,dx))
+            new_angle = calculNouvelAngle(dx, dy)
+
             new_vitesse = sqrt((positions_x[-1]- positions_x[-10])**2 + (positions_y[-1]- positions_y[-10])**2)
             new_angle = -radians(180 - new_angle)
             vx = new_vitesse*POURCENTS_REBOND * cos(new_angle)
@@ -60,3 +61,21 @@ def calculate_trajectory(vitesse_initiale, angle_degres, size, position_initiale
                 rebond = True
 
     return positions_x, positions_y, POSITION_REBOND
+
+
+def calculNouvelAngle(dx, dy):
+    if dx == 0:
+        if dy > 0:
+            new_angle = 90
+        else:
+            new_angle = -90
+    else:
+        new_angle = degrees(atan(dy / dx))
+
+
+        if dx < 0:
+            if dy >= 0:
+                new_angle += 180
+            else:
+                new_angle -= 180
+    return new_angle
