@@ -5,7 +5,7 @@ import pygame
 import sys
 import os
 import random
-from gestionSon import *
+from jeu.gestionSon import *
 
 
 # Pour avoir le script Physique (Essayer de simplifier ça)
@@ -23,7 +23,7 @@ class JeuBasket:
         initialiser_sons()
         jouer_musique_fond(volume=0.1 )
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.SysFont("../assets/fonts/Helvetica.ttf", 36)
+        self.font = pygame.font.SysFont("assets/fonts/Helvetica.ttf", 36)
 
 
         self.changes = True
@@ -50,13 +50,14 @@ class JeuBasket:
         self.BonusState = True
         self.bonusCoord = (-1, -1)
         self.bonus_actif = False
+        bonusLances = 0
 
     def chargementTextureJeu(self):
-        self.background = pygame.image.load("../assets/img/background.png")
+        self.background = pygame.image.load("assets/img/background.png")
         self.background = pygame.transform.scale(self.background, (self.width, self.height))
-        self.ball_img = pygame.image.load("../assets/img/basketball.png")
+        self.ball_img = pygame.image.load("assets/img/basketball.png")
         self.ball_img = pygame.transform.scale(self.ball_img, (50, 50))
-        self.hoop_img = pygame.image.load("../assets/img/hoop.png")
+        self.hoop_img = pygame.image.load("assets/img/hoop.png")
         self.hoop_img = pygame.transform.scale(self.hoop_img, (150, 250))
 
     # Set et Get
@@ -113,7 +114,7 @@ class JeuBasket:
             self.essais += 1
             pos_panier = self.resetBall(pos_panier)
 
-        if not self.bonus_actif and random.randint(1, 3) == 1:
+        if (not self.bonus_actif and random.randint(1, 3) == 1):
             self.bonusCoord = self.bonus.nouveauBonus(self.width, self.height)
             self.bonus_actif = True
             pygame.display.flip()
@@ -222,9 +223,9 @@ class JeuBasket:
 class Bonus:
     def __init__(self):
         self.images = {
-            "coeur": "../assets/img/coeur_bonus.png",
-            "bonus_1": "../assets/img/coeur_bonus_hardcore.png",
-            "bonus_2": "../assets/img/coeur_bonus_hardcore.png"
+            "coeur": "assets/img/coeur_bonus.png",
+            "bonus_1": "assets/img/bonus1.png",
+            "bonus_2": "assets/img/bonus2.png"
         }
         self.bonus_actuel = ""
 

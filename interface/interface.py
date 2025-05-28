@@ -1,18 +1,10 @@
 from customtkinter import *
-from tkinter import messagebox
-from PIL import Image, ImageTk
-import os
-
-
-def lancer_jeu():
-    messagebox.showinfo("Démarrage",
-                        "Prépare-toi, la partie va bientôt commencer (Big J, il me faut ton aide pour co au jeu)")
+from PIL import Image
 
 
 def afficher_interface():
 
     # Apparence et fenêtre
-
     set_appearance_mode("Dark")
     fenetre = CTk()
     fenetre.bind('<Escape>', lambda e: fenetre.destroy())
@@ -21,7 +13,7 @@ def afficher_interface():
     fenetre.attributes("-fullscreen", True)
 
 
-    img_path = "../assets/buttonImg/fond_regle_projet_tranverse.png"
+    img_path = "assets/buttonImg/fond_regle_projet_tranverse.png"
     bg_image = CTkImage(Image.open(img_path), size=(1920, 1080))
 
     background_label = CTkLabel(fenetre, image=bg_image, text="")  # customtkinter version
@@ -46,9 +38,6 @@ def afficher_interface():
              justify="left", bg_color="white").pack(padx=20, pady=10)
 
     CTkButton(fenetre, text="Démarrer l'expérience", font=("Arial", 40),
-              fg_color="#61afef", text_color="white", command=lancer_jeu).place(relx=0.5, rely=0.5, anchor="center")
+              fg_color="#61afef", text_color="white", command=fenetre.destroy).place(relx=0.5, rely=0.5, anchor="center")
 
     fenetre.mainloop()
-
-
-afficher_interface()
