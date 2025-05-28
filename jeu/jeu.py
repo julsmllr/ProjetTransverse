@@ -43,6 +43,13 @@ class JeuBasket:
         # Ecrans 
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)      
         pygame.display.set_caption("Jeu de Basket 2D")
+        self.clock.tick(60)  # Max fps
+
+        # Bonus
+        self.bonus = Bonus()
+        self.BonusState = True
+        self.bonusCoord = (-1, -1)
+        self.bonus_actif = False
 
     def chargementTextureJeu(self):
         self.background = pygame.image.load("../assets/img/background.png")
@@ -61,11 +68,11 @@ class JeuBasket:
     
     def setAnglePlus(self ):
         if self.angle < 180:
-            self.angle += 0.3
+            self.angle += 0.2
 
     def setAngleMoins(self):
         if self.angle > 0:
-            self.angle -= 0.3
+            self.angle -= 0.2
 
     def getAngle(self):
         return self.angle
@@ -73,11 +80,13 @@ class JeuBasket:
     # Méthodes liées aux coordonnées
     def dessinerLancer(self, pos_balle_x, pos_balle_y, pos_panier, pos_rebond):
         indice_position = 0
-        panier_touche = False 
+        panier_touche = False
+        rebond = False
         while indice_position < len(pos_balle_x) and not panier_touche:
             if len(pos_rebond) > 0:
                 if (pos_rebond[0][0]-5, pos_rebond[0][1]-5) <= (pos_balle_x[indice_position], pos_balle_y[indice_position]) <= (pos_rebond[0][0]+5, pos_rebond[0][1]+5):
                     jouer_son_rebond()
+                    rebond = True
                     if len(pos_rebond) > 0:
                         pos_rebond.pop(0)
 
@@ -85,16 +94,30 @@ class JeuBasket:
                     panier_touche = True
                     jouer_son_panier()
                     self.score += 1
+                    if rebond:
+                        self.score += 1
                     pos_panier = self.resetBall(pos_panier)
 
 
             else:
                     self.drawGame((pos_balle_x[indice_position], pos_balle_y[indice_position]), pos_panier)
+
+                    if (self.bonus_actif and self.bonusCoord[0]<= pos_balle_x[indice_position] <= self.bonusCoord[0] + 50 and self.bonusCoord[1] <= pos_balle_y[indice_position] <= self.bonusCoord[1] + 50):
+                        self.essais, self.score = self.bonus.pointsBonus(self.essais, self.score)
+                        self.bonus_actif = False
+                        self.bonusCoord = (-1, -1)
                     indice_position += 1
+
 
         if not panier_touche:
             self.essais += 1
             pos_panier = self.resetBall(pos_panier)
+
+        if not self.bonus_actif and random.randint(1, 3) == 1:
+            self.bonusCoord = self.bonus.nouveauBonus(self.width, self.height)
+            self.bonus_actif = True
+            pygame.display.flip()
+
         return pos_panier
 
     def verifCoordonnes(self, pos_balle_x, pos_balle_y, pos_panier, indice_position):
@@ -103,6 +126,8 @@ class JeuBasket:
                 return True
             else: return False
         else: return False
+
+
 
     # Méthodes pour jeu
 
@@ -117,23 +142,23 @@ class JeuBasket:
             if (pos_x[index] > 0):
                 pygame.draw.circle(self.screen, ORANGE, (pos_x[index], pos_y[index]), 5)
                 index += 20
-        pygame.display.flip()
 
     def drawGame(self, pos_ball, pos_panier):
-        
+
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.hoop_img, (pos_panier[0], pos_panier[1]))
         self.screen.blit(self.ball_img, (pos_ball[0]-25, pos_ball[1]-25))
 
-        pygame.draw.rect(self.screen, RED, (pos_panier[0]+25, pos_panier[1]+75, 100, 25), 2)
         self.showScore()
+
+        if self.bonus_actif and self.bonusCoord != (-1, -1):
+            self.bonus.dessinerBonus(self.bonusCoord, self.screen)
         pygame.display.flip()
 
     def showScore(self):
-        pygame.draw.rect(self.screen, WHITE, (0, 0, 300, 150))
-        score_text = self.font.render(f"Score : {self.score}", True, BLACK)
+        score_text = self.font.render(f"Score : {self.score}", True, WHITE)
         self.screen.blit(score_text, (30, 30))
-        essai_text = self.font.render(f"Erreurs : {self.essais}/{self.max_essais}", True, BLACK)
+        essai_text = self.font.render(f"Erreurs : {self.essais}/{self.max_essais}", True, WHITE)
         self.screen.blit(essai_text, (30, 80))
 
     def jeuLancer(self):
@@ -156,7 +181,7 @@ class JeuBasket:
             if keys[pygame.K_UP] and self.power < 400:
                 self.setPower(self.getPower()+0.5)
                 self.changes = True
-            elif keys[pygame.K_DOWN]:
+            elif keys[pygame.K_DOWN] and self.power > 0:
                 self.setPower(self.getPower()-0.5)
                 self.changes = True
             elif keys[pygame.K_LEFT]:
@@ -173,6 +198,7 @@ class JeuBasket:
                 else:
                     self.dessinBallonNonLancer()
                     self.changes = False
+            pygame.display.flip()
         pygame.quit()
 
     def ballonLancer(self):
@@ -182,23 +208,48 @@ class JeuBasket:
         posBalleX, posBalleY, posRebond = calculate_trajectory(self.power, self.angle,(self.width, self.height), position_initiale=self.pos_joueur)
         self.drawGame(self.pos_joueur, self.pos_panier)
         self.drawTrajectoryPreview(posBalleX, posBalleY)
-        self.clock.tick(60) #Max fps
-        pygame.display.flip()
 
     def dessinBallonLancer(self):
         posBalleX, posBalleY, posRebond= calculate_trajectory(self.power, self.angle, (self.width, self.height), position_initiale=self.pos_joueur)
         self.pos_panier = self.dessinerLancer(posBalleX, posBalleY, self.pos_panier, posRebond)
-        self.clock.tick(60) #Max fps
-        pygame.display.flip()
         self.ballonStatus = False
-    
-
 
     def jeuQuit(self):
-
         pygame.quit()
         sys.exit()
 
+
+class Bonus:
+    def __init__(self):
+        self.images = {
+            "coeur": "../assets/img/coeur_bonus.png",
+            "bonus_1": "../assets/img/coeur_bonus_hardcore.png",
+            "bonus_2": "../assets/img/coeur_bonus_hardcore.png"
+        }
+        self.bonus_actuel = ""
+
+    def choixBonus(self):
+        keys = list(self.images.keys())
+        self.bonus_actuel = keys[random.randint(0, len(keys)-1)]
+
+    def nouveauBonus(self, width, height):
+        self.choixBonus()
+        coordX = random.randint(100, width - 100)
+        coordY = random.randint(200, height - 350)
+        return (coordX, coordY)
+
+    def pointsBonus(self, erreurs_actuelles, score_actuel):
+        if self.bonus_actuel == "coeur":
+            return erreurs_actuelles-1, score_actuel
+        elif self.bonus_actuel == "bonus_1":
+            return erreurs_actuelles, score_actuel + 1
+        else:
+            return erreurs_actuelles, score_actuel + 2
+
+    def dessinerBonus(self, coordonnees, screen):
+        image = pygame.image.load(self.images[self.bonus_actuel])
+        image = pygame.transform.scale(image, (50, 50))
+        screen.blit(image, coordonnees)
 # Couleurs
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
