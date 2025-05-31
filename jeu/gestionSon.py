@@ -1,19 +1,32 @@
+# ===================================================== #
+#                                                       #
+#                   Projet Transverse                   #
+#                    GESTIONSONS.PY                     #
+#                                                       #
+# ===================================================== #
+
+
+
+# ===================================================== #
+#                       IMPORTATIONS                    #
+# ===================================================== #
 import pygame
 
 
 
+# ===================================================== #
+#                       FONCTIONS                       #
+# ===================================================== #
 pygame.mixer.init()
 
 # --- Initialisation des sons ---
-# Les variables des sons seront initialisées par la fonction initialiser_sons()
+# Les variables  initialisées avec fonction initialiser_sons()
 son_lancer = None
 son_rebond = None
 son_panier = None
 
 
 volume_general = 0.5
-
-
 
 def initialiser_sons():
     global son_lancer, son_rebond, son_panier
