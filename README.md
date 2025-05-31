@@ -1,5 +1,3 @@
-# ProjetTransverse
-
 # EFREI BALLERS - Jeu de Basket 2D 🏀
 
 Un jeu de basket 2D développé en Python utilisant Pygame où le joueur doit marquer des paniers en ajustant l'angle et la puissance de tir.
