@@ -43,7 +43,7 @@ class JeuBasket:
         self.power = 90
         self.angle = 90
         self.essais = 0
-        self.max_essais = 15
+        self.max_essais = 10
         self.score = 0
         self.pos_joueur = (self.width/2, self.height - 100)
         self.pos_panier = [random.randint(100, self.width - 100), random.randint(200, self.height - 250)]
@@ -59,7 +59,9 @@ class JeuBasket:
         self.BonusState = True
         self.bonusCoord = (-1, -1)
         self.bonus_actif = False
-        bonusLances = 0
+
+        self.hardcoreMode = True
+
 
     def chargementTextureJeu(self):
         self.background = pygame.image.load("assets/img/background.png")
@@ -208,6 +210,10 @@ class JeuBasket:
                 else:
                     self.dessinBallonNonLancer()
                     self.changes = False
+
+            if self.score >= 10:
+                self.HardcoreModeLancer()
+
             pygame.display.flip()
         pygame.quit()
 
@@ -228,6 +234,13 @@ class JeuBasket:
         pygame.quit()
         sys.exit()
 
+    def HardcoreModeLancer(self):
+        if self.hardcoreMode:
+            self.background = pygame.image.load("assets/img/background_hardcore.jpg")
+            self.background = pygame.transform.scale(self.background, (self.width, self.height))
+            jouer_musique_heilman()
+            self.bonus.images["coeur"] = "assets/img/coeur_bonus_hardcore.png"
+            self.hardcoreMode = False
 
 class Bonus:
     def __init__(self):
