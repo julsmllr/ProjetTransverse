@@ -33,7 +33,7 @@ python main.py
 
 ## 🎯 Règles du jeu
 
-- Vous avez 15 essais maximum
+- Vous avez 15 erreurs maximum
 - Un panier = 1 point
 - Un panier avec rebond = 2 points
 - Des bonus apparaissent aléatoirement:
