@@ -38,7 +38,7 @@ def afficher_interface():
 
 
     # Widgets
-    CTkLabel(fenetre, text="EFREI BALLERS ", font=("Arial", 40, "bold"),
+    CTkLabel(fenetre, text="EFREI BALLERS (donnez titre svp)", font=("Arial", 40, "bold"),
              text_color="orange", bg_color="white").pack(pady=20)
 
     regles = """
