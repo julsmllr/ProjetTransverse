@@ -236,8 +236,6 @@ class JeuBasket:
 
     def HardcoreModeLancer(self):
         if self.hardcoreMode:
-            self.background = pygame.image.load("assets/img/background_hardcore.jpg")
-            self.background = pygame.transform.scale(self.background, (self.width, self.height))
             jouer_musique_heilman()
             self.bonus.images["coeur"] = "assets/img/coeur_bonus_hardcore.png"
             self.hardcoreMode = False
